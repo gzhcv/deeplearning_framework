@@ -1,5 +1,6 @@
 #include "c_runtime_api.h"
 #include "cpu_device_api.h"
+#include "cuda_device_api.h"
 #include "runtime_base.h"
 
 #include <array>
@@ -21,7 +22,9 @@ class DeviceAPIManager {
   DeviceAPIManager() {
     std::fill(api_.begin(), api_.end(), nullptr);
     static CPUDeviceAPI cpu_device_api_inst;
+    static CUDADeviceAPI gpu_device_api_inst;
     api_[kCPU] = static_cast<DeviceAPI *>(&cpu_device_api_inst);
+    api_[kGPU] = static_cast<DeviceAPI *>(&gpu_device_api_inst);
   }
 
   static DeviceAPIManager *Global() {
@@ -48,9 +51,12 @@ inline DLArray* DLArrayCreate_() {
 }
 
 inline void DLArrayFree_(DLArray* arr) {
-  // need to complete free memory.
-  if (arr->data != nullptr) {
-    DeviceAPIManager::Get(arr->ctx)->FreeDataSpace(arr->ctx, arr->data);
+  if (arr != nullptr) {
+    delete[] arr->shape;
+    if (arr->data != nullptr) {
+      DeviceAPIManager::Get(arr->ctx)->FreeDataSpace(arr->ctx, arr->data);
+    }
+    delete arr;
   }
 }
 

@@ -17,7 +17,7 @@ int main() {
 
     auto *out = new DLArrayHandle();
 
-    DLArrayAlloc(shape,ndim,ctx, out);
+    DLArrayAlloc(shape,ndim, ctx, out);
 
     cout<<(*out)->shape[0]<<" "<<(*out)->shape[1]<<endl;
     

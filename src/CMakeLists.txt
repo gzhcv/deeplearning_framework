@@ -5,10 +5,13 @@ project(thunder)
 set(CMAKE_CXX_STANDARD 11)
 
 set(SOURCE_FILES
+	main.cc
         src/c_runtime_api.cc
         src/c_runtime_api.h
         src/cpu_device_api.cc
         src/cpu_device_api.h
+        src/cuda_device_api.cc
+        src/cuda_device_api.h
         src/device_api.h
         src/dlarray.h
         src/runtime_base.h)
